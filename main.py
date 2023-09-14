@@ -74,4 +74,6 @@ for carname in cardic2.keys():
     print("%s :"% carname)
     print(subdict)
     #print("\n")
+    #测试上传github
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
