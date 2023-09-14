@@ -20,7 +20,7 @@ def timesubw(a, b):
         return (-delta.seconds)
 
 #读取数据库数据
-conn = pymysql.connect(host = 'localhost', user = 'root', password = '517447', db = 'time2', port = 3306, charset ='utf8')
+conn = pymysql.connect(host = '192.168.3.192', user = 'client', password = 'client123', db = 'time2', port = 3306, charset ='utf8')
 cur = conn.cursor()
 cur.execute('SELECT * FROM timelist')
 result = cur.fetchall()
@@ -32,6 +32,7 @@ for i in result:
 car_list = list(car_set)
 #for i in range(1, 101):
 print(len(car_list))
+cur.close()
 conn.close()  # 使用完后记得关掉
 
 #用两个字典分别存储两天的车牌号与其对应的数据
@@ -52,13 +53,14 @@ for i in car_list:
        cardic2[i] = cartro2
 
 #计算所需车牌号的时间差值
+datadict2=dict()
 for carname in cardic2.keys():
     subdict=dict()
     for i in range(0, len(cardic2[carname])-1):
 
         for u in range(1,  len(cardic2[carname])-i):
             time = timesubw(cardic2[carname][i][3], cardic2[carname][i+u][3])
-            if abs(time) < 500:
+            if abs(time) < 300:
                 if time >= 0:
                     key = cardic2[carname][i][0] + '--' + cardic2[carname][i + u][0]
                     if key in subdict:
@@ -71,7 +73,7 @@ for carname in cardic2.keys():
                         subdict[key].append(-time)
                     else:
                         subdict[key] = [-time]
-    print("%s :"% carname)
-    print(subdict)
+    datadict2[carname] = subdict
     #print("\n")
+print(datadict2)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
